@@ -35,6 +35,7 @@ endif()
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
   include("/Users/thomas/Developer/Web/github/TimeTracker/cmake-build-debug/src/core/cmake_install.cmake")
+  include("/Users/thomas/Developer/Web/github/TimeTracker/cmake-build-debug/src/web/cmake_install.cmake")
 
 endif()
 

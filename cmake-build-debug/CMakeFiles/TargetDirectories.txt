@@ -6,3 +6,7 @@
 /Users/thomas/Developer/Web/github/TimeTracker/cmake-build-debug/src/core/CMakeFiles/edit_cache.dir
 /Users/thomas/Developer/Web/github/TimeTracker/cmake-build-debug/src/core/CMakeFiles/Test_TimeTracker-Core.dir
 /Users/thomas/Developer/Web/github/TimeTracker/cmake-build-debug/src/core/CMakeFiles/TimeTracker_CLion.dir
+/Users/thomas/Developer/Web/github/TimeTracker/cmake-build-debug/src/web/CMakeFiles/rebuild_cache.dir
+/Users/thomas/Developer/Web/github/TimeTracker/cmake-build-debug/src/web/CMakeFiles/edit_cache.dir
+/Users/thomas/Developer/Web/github/TimeTracker/cmake-build-debug/src/web/CMakeFiles/webclient_Test.dir
+/Users/thomas/Developer/Web/github/TimeTracker/cmake-build-debug/src/web/CMakeFiles/webserver_Test.dir

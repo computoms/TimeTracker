@@ -136,6 +136,32 @@ TimeTracker_CLion/fast:
 	$(MAKE) -f src/core/CMakeFiles/TimeTracker_CLion.dir/build.make src/core/CMakeFiles/TimeTracker_CLion.dir/build
 .PHONY : TimeTracker_CLion/fast
 
+#=============================================================================
+# Target rules for targets named webclient_Test
+
+# Build rule for target.
+webclient_Test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 webclient_Test
+.PHONY : webclient_Test
+
+# fast build rule for target.
+webclient_Test/fast:
+	$(MAKE) -f src/web/CMakeFiles/webclient_Test.dir/build.make src/web/CMakeFiles/webclient_Test.dir/build
+.PHONY : webclient_Test/fast
+
+#=============================================================================
+# Target rules for targets named webserver_Test
+
+# Build rule for target.
+webserver_Test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 webserver_Test
+.PHONY : webserver_Test
+
+# fast build rule for target.
+webserver_Test/fast:
+	$(MAKE) -f src/web/CMakeFiles/webserver_Test.dir/build.make src/web/CMakeFiles/webserver_Test.dir/build
+.PHONY : webserver_Test/fast
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -146,6 +172,8 @@ help:
 	@echo "... edit_cache"
 	@echo "... Test_TimeTracker-Core"
 	@echo "... TimeTracker_CLion"
+	@echo "... webclient_Test"
+	@echo "... webserver_Test"
 .PHONY : help
 
 

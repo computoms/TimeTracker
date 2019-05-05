@@ -36,6 +36,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "CMakeFiles/3.10.3/CMakeSystem.cmake"
   "../src/CMakeLists.txt"
   "../src/core/CMakeLists.txt"
+  "../src/web/CMakeLists.txt"
   )
 
 # The corresponding makefile is:
@@ -49,10 +50,13 @@ set(CMAKE_MAKEFILE_PRODUCTS
   "CMakeFiles/CMakeDirectoryInformation.cmake"
   "src/CMakeFiles/CMakeDirectoryInformation.cmake"
   "src/core/CMakeFiles/CMakeDirectoryInformation.cmake"
+  "src/web/CMakeFiles/CMakeDirectoryInformation.cmake"
   )
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
   "src/core/CMakeFiles/Test_TimeTracker-Core.dir/DependInfo.cmake"
   "src/core/CMakeFiles/TimeTracker_CLion.dir/DependInfo.cmake"
+  "src/web/CMakeFiles/webclient_Test.dir/DependInfo.cmake"
+  "src/web/CMakeFiles/webserver_Test.dir/DependInfo.cmake"
   )
