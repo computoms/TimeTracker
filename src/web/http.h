@@ -11,10 +11,10 @@ namespace tt
     public:
         HttpResponse(std::string content);
 
-        std::string getSocketData() const;
         void sendTo(const ClientSocket &client) const;
 
     private:
+        std::string getSocketData() const;
         void makeHeader(std::string content);
 
     private:

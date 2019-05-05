@@ -2,6 +2,7 @@
 
 #include <sstream>
 #include <unistd.h>
+#include <iostream>
 
 using namespace tt;
 
@@ -36,7 +37,7 @@ void HttpResponse::sendTo(const ClientSocket &client) const
 {
     std::string message = getSocketData();
     write(client.socket(), message.c_str(), message.size());
-    printf("------------------ Message sent -------------------\n");
+    std::cout << "------------------ Message sent -------------------" << std::endl;
 }
 
 HttpRequest::HttpRequest():
@@ -80,7 +81,7 @@ void HttpRequest::parseData(std::string data)
             return;
         }
         path = data.substr(spacePos + 1, pathPos - spacePos - 1);
-        printf(std::string("GET request @ path: " + path + "\n").c_str());
+        std::cout << "GET request @ path " << path << std::endl;
     }
     else if (type.compare("POST") == 0)
     {

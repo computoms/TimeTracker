@@ -15,7 +15,9 @@ using namespace tt;
 int main()
 {
     WebServer server;
-    server.initialize(0, PORT);
+    server.initialize("127.0.0.1", PORT);
     server.start();
+    server.stop();
+    server.shutdown();
     return 0;
 }

@@ -68,6 +68,9 @@ void WebServer::start()
 
 
         client.close();
+
+        // Only process a single query with this server (for testing)
+        isStarted = false;
     }
 }
 
