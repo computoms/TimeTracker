@@ -169,7 +169,7 @@ TEST_CASE("TimeTracker::getWorkDay returns 'Null' workday if nothing exists")
     REQUIRE(wd.getTime().getDate().dayOfMonth == 0);
 }
 
-TEST_CASE("TimeTracker::getWorkDay returns write workday if exists")
+TEST_CASE("TimeTracker::getWorkDay returns right workday if exists")
 {
     WorkDay existingWd(Date(2018, 01, 01));
     WorkDay testingWd(Date(2018, 01, 01));

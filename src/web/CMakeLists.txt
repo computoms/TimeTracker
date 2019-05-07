@@ -3,7 +3,9 @@ project(webserver)
 list(APPEND SRCS_CLASSES
         webserver
         http
-        clientsocket)
+        clientsocket
+        pagegenerator
+        actioncontroller)
 
 set(SRC_DIR "src/web")
 

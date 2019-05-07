@@ -10,7 +10,8 @@ using namespace tt;
 WebServer::WebServer():
     serverSocket        (-1),
     isStarted           (false),
-    maxConnections      (10)
+    maxConnections      (10),
+    actionController    ()
 {
 }
 
@@ -61,16 +62,22 @@ void WebServer::start()
         HttpRequest request = client.read();
         // TODO errors
 
-        // TODO process request
 
         HttpResponse response("Default Http Answer");
+        // TODO process request
+        if (request.getType() == Request_Get)
+        {
+            std::string path = request.getPath();
+            response = processGetAction(path);
+        }
+
         response.sendTo(client);
-
-
         client.close();
 
-        // Only process a single query with this server (for testing)
-        isStarted = false;
+        if (request.getType() == Request_Get && request.getPath() == "/quit?")
+        {
+            isStarted = false;
+        }
     }
 }
 
@@ -82,4 +89,34 @@ void WebServer::stop()
 void WebServer::shutdown()
 {
     ::close(serverSocket);
+}
+
+HttpResponse WebServer::processGetAction(std::string path) const
+{
+    std::string page("");
+    if (path == "/")
+    {
+        page = pageGenerator.mainPage();
+    }
+    else if (path == "/start-working?")
+    {
+        page = pageGenerator.startWorkingPage();
+        actionController.startWorking();
+    }
+    else if (path == "/stop-working?")
+    {
+        page = pageGenerator.mainPage();
+        actionController.stopWorking();
+    }
+    else if (path == "/quit?")
+    {
+        page += pageGenerator.quitPage();
+        actionController.quit();
+    }
+    else
+    {
+        page += pageGenerator.pageNotFound(path);
+    }
+
+    return HttpResponse(page);
 }

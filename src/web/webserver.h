@@ -8,6 +8,8 @@
 #include <netinet/in.h>
 
 #include "http.h"
+#include "pagegenerator.h"
+#include "actioncontroller.h"
 
 namespace tt
 {
@@ -22,11 +24,16 @@ namespace tt
         void shutdown();
 
     private:
+        HttpResponse processGetAction(std::string path) const;
+
+    private:
         int serverSocket;
         bool isStarted;
 
         struct sockaddr_in address;
         int maxConnections;
+        PageGenerator pageGenerator;
+        ActionController actionController;
     };
 }
 
