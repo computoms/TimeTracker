@@ -1,5 +1,10 @@
 #include "pagegenerator.h"
 
+std::string PageAddress::Quit = "/quit?";
+std::string PageAddress::Main = "/";
+std::string PageAddress::StartWorking = "/start-working?";
+std::string PageAddress::StopWorking = "/stop-working?";
+
 PageGenerator::PageGenerator()
 {
 
@@ -41,4 +46,20 @@ std::string PageGenerator::pageNotFound(std::string path) const
 {
     return englobeInHtml("<p>You requested the page '" + path + "'.</p>"
                                                                 "<form action=\"\"><input type=\"submit\" value=\"Go to Main\" /></form>");
+}
+
+void PageGenerator::initialize()
+{
+    // Generate known pages
+    pages[PageAddress::Main] = mainPage();
+    pages[PageAddress::StartWorking] = startWorkingPage();
+    pages[PageAddress::StopWorking] = mainPage();
+    pages[PageAddress::Quit] = quitPage();
+}
+
+std::string PageGenerator::getPage(std::string address) const
+{
+    if (pages.find(address) == pages.end())
+        return pageNotFound(address);
+    return pages.at(address);
 }

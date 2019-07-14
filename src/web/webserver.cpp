@@ -36,6 +36,9 @@ void WebServer::initialize(std::string ipAddress, unsigned short port)
         perror("In bind");
         exit(EXIT_FAILURE); // Todo Error
     }
+
+    pageGenerator.initialize();
+    actionController.initializeActions();
 }
 
 void WebServer::start()
@@ -62,9 +65,7 @@ void WebServer::start()
         HttpRequest request = client.read();
         // TODO errors
 
-
         HttpResponse response("Default Http Answer");
-        // TODO process request
         if (request.getType() == Request_Get)
         {
             std::string path = request.getPath();
@@ -74,7 +75,7 @@ void WebServer::start()
         response.sendTo(client);
         client.close();
 
-        if (request.getType() == Request_Get && request.getPath() == "/quit?")
+        if (request.getType() == Request_Get && request.getPath() == PageAddress::Quit)
         {
             isStarted = false;
         }
@@ -93,30 +94,7 @@ void WebServer::shutdown()
 
 HttpResponse WebServer::processGetAction(std::string path) const
 {
-    std::string page("");
-    if (path == "/")
-    {
-        page = pageGenerator.mainPage();
-    }
-    else if (path == "/start-working?")
-    {
-        page = pageGenerator.startWorkingPage();
-        actionController.startWorking();
-    }
-    else if (path == "/stop-working?")
-    {
-        page = pageGenerator.mainPage();
-        actionController.stopWorking();
-    }
-    else if (path == "/quit?")
-    {
-        page += pageGenerator.quitPage();
-        actionController.quit();
-    }
-    else
-    {
-        page += pageGenerator.pageNotFound(path);
-    }
-
-    return HttpResponse(page);
+    std::string nextPage = pageGenerator.getPage(path);
+    actionController.execute(path);
+    return HttpResponse(nextPage);
 }
