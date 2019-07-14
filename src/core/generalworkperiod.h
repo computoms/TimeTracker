@@ -13,6 +13,7 @@ public:
     GeneralWorkPeriod();
     GeneralWorkPeriod(TimeOfDay start);
     GeneralWorkPeriod(TimeOfDay start, TimeOfDay end);
+    GeneralWorkPeriod(GeneralWorkPeriod wp);
     ~GeneralWorkPeriod();
 
     TimeOfDay getStart() const;

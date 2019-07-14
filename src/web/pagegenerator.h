@@ -4,6 +4,8 @@
 #include <string>
 #include <map>
 
+#include "core/timetracker.h"
+
 class PageAddress
 {
 public:
@@ -13,10 +15,14 @@ public:
     static std::string StopWorking;
 };
 
+class PageGenerator;
+
+typedef std::string (*GenerateHttpPage)(const PageGenerator *pg);
+
 class PageGenerator
 {
 public:
-    PageGenerator();
+    PageGenerator(TimeTracker *tt);
 
     void initialize();
 
@@ -30,7 +36,8 @@ private:
 
     std::string englobeInHtml(std::string content) const;
 
-    std::map<std::string, std::string> pages;
+    std::map<std::string, GenerateHttpPage> pages;
+    TimeTracker *timeTracker;
 };
 
 #endif // TT_PAGE_GENERATOR_H

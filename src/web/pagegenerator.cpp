@@ -5,19 +5,34 @@ std::string PageAddress::Main = "/";
 std::string PageAddress::StartWorking = "/start-working?";
 std::string PageAddress::StopWorking = "/stop-working?";
 
-PageGenerator::PageGenerator()
+PageGenerator::PageGenerator(TimeTracker *tt):
+    timeTracker (tt)
 {
 
 }
 
 std::string PageGenerator::mainPage() const
 {
-    return englobeInHtml("<form action=\"/start-working\">"
-           "    <input type=\"submit\" value=\"Start working\" />"
-           "</form>"
-           "<form action=\"/quit\">"
-           "    <input type=\"submit\" value=\"Quit\" />"
-           "</form>");
+    std::string page = "<form action=\"/start-working\">"
+                  "    <input type=\"submit\" value=\"Start working\" />"
+                  "</form>"
+                  "<form action=\"/quit\">"
+                  "    <input type=\"submit\" value=\"Quit\" />"
+                  "</form>";
+    auto workDays = timeTracker->getWorkDays();
+    for (auto &wd : workDays)
+    {
+        page += "<div>Work day " + wd->getTime().toString() + "<br/>";
+        for (auto &wp : wd->getWorkPeriods())
+        {
+            page += std::string("<p>Work period: ") + std::to_string(wp.getDuration().getHours())
+                    + "h, " + std::to_string(wp.getDuration().getMinutes()) + "m,</p>";
+        }
+        page += "</div>";
+    }
+
+
+    return englobeInHtml(page);
 }
 
 std::string PageGenerator::englobeInHtml(std::string content) const
@@ -51,15 +66,15 @@ std::string PageGenerator::pageNotFound(std::string path) const
 void PageGenerator::initialize()
 {
     // Generate known pages
-    pages[PageAddress::Main] = mainPage();
-    pages[PageAddress::StartWorking] = startWorkingPage();
-    pages[PageAddress::StopWorking] = mainPage();
-    pages[PageAddress::Quit] = quitPage();
+    pages[PageAddress::Main] = [] (const PageGenerator *pg) -> std::string { return pg->mainPage(); };
+    pages[PageAddress::StartWorking] = [] (const PageGenerator *pg) -> std::string { return pg->startWorkingPage(); };
+    pages[PageAddress::StopWorking] = [] (const PageGenerator *pg) -> std::string { return pg->mainPage(); };
+    pages[PageAddress::Quit] = [] (const PageGenerator *pg) -> std::string { return pg->quitPage(); };
 }
 
 std::string PageGenerator::getPage(std::string address) const
 {
     if (pages.find(address) == pages.end())
         return pageNotFound(address);
-    return pages.at(address);
+    return pages.at(address)(this);
 }

@@ -13,31 +13,31 @@ TimeTracker::~TimeTracker()
 
 void TimeTracker::startWorking()
 {
-    WorkDay existing = getWorkDay(DateTime::today().getDate());
-    if (existing.isNull())
+    std::shared_ptr<WorkDay> existing = getWorkDay(DateTime::today().getDate());
+    if (existing->isNull())
     {
-        existing = WorkDay(DateTime::today().getDate());
+        existing = std::shared_ptr<WorkDay>(new WorkDay(DateTime::today().getDate()));
         addWorkDay(existing);
     }
 
-    existing.addWorkPeriod(GeneralWorkPeriod(DateTime::now().getTimeOfDay()));
+    existing->addWorkPeriod(GeneralWorkPeriod(DateTime::now().getTimeOfDay()));
 }
 
 void TimeTracker::stopWorking()
 {
-    WorkDay existing = getWorkDay(DateTime::today().getDate());
-    if (!existing.isNull() && existing.getCurrentWorkPeriod() != NULL)
+    std::shared_ptr<WorkDay> existing = getWorkDay(DateTime::today().getDate());
+    if (!existing->isNull() && existing->getCurrentWorkPeriod() != nullptr)
     {
-        existing.getCurrentWorkPeriod()->setEnd();
+        existing->getCurrentWorkPeriod()->setEnd();
     }
 }
 
-void TimeTracker::addWorkDay(WorkDay wd)
+void TimeTracker::addWorkDay(std::shared_ptr<WorkDay> wd)
 {
     _workDays.push_back(wd);
 }
 
-bool TimeTracker::replaceWorkDay(WorkDay wd, Date d)
+bool TimeTracker::replaceWorkDay(std::shared_ptr<WorkDay> wd, Date d)
 {
     int index = getWorkDayIndex(d);
     if (index == -1)
@@ -49,9 +49,9 @@ bool TimeTracker::replaceWorkDay(WorkDay wd, Date d)
 
 Duration TimeTracker::getWorkingDurationOfToday() const
 {
-    WorkDay existing = getWorkDay(DateTime::today().getDate());
-    if (!existing.isNull())
-        return existing.getWorkTime();
+    auto existing = getWorkDay(DateTime::today().getDate());
+    if (!existing->isNull())
+        return existing->getWorkTime();
 
     return Duration();
 }
@@ -61,9 +61,9 @@ Duration TimeTracker::getWorkingDurationBetween(DateTime from, DateTime to) cons
     Duration workDuration;
     for (size_t i(0); i < _workDays.size(); ++i)
     {
-        WorkDay d = _workDays[i];
-        if (d.getTime() >= from && d.getTime() <= to)
-            workDuration += d.getWorkTime();
+        auto d = _workDays[i];
+        if (d->getTime() >= from && d->getTime() <= to)
+            workDuration += d->getWorkTime();
     }
     return workDuration;
 }
@@ -73,11 +73,11 @@ Duration TimeTracker::getWorkingDurationBetween(DateTime from, DateTime to) cons
  * @param day
  * @return
  */
-WorkDay TimeTracker::getWorkDay(Date day) const
+std::shared_ptr<WorkDay> TimeTracker::getWorkDay(Date day) const
 {
     int index = getWorkDayIndex(day);
     if (index == -1)
-        return WorkDay(Date());
+        return std::shared_ptr<WorkDay>(new WorkDay(Date()));
     return _workDays[index];
 }
 
@@ -90,8 +90,21 @@ WorkDay TimeTracker::getWorkDay(Date day) const
 size_t TimeTracker::getWorkDayIndex(Date day) const
 {
     for (size_t i(0); i < _workDays.size(); ++i)
-        if (_workDays[i].getTime().isSameDayAs(DateTime(day, TimeOfDay())))
+        if (_workDays[i]->getTime().isSameDayAs(DateTime(day, TimeOfDay())))
             return i;
     return -1;
+}
+
+bool TimeTracker::isWorking() const
+{
+    auto existing = getWorkDay(DateTime::today().getDate());
+    if (existing->isNull())
+        return false;
+    return existing->getCurrentWorkPeriod() != nullptr;
+}
+
+std::vector<std::shared_ptr<WorkDay> > TimeTracker::getWorkDays() const
+{
+    return _workDays;
 }
 

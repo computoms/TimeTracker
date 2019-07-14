@@ -11,7 +11,9 @@ WebServer::WebServer():
     serverSocket        (-1),
     isStarted           (false),
     maxConnections      (10),
-    actionController    ()
+    timeTracker         (),
+    actionController    (&timeTracker),
+    pageGenerator       (&timeTracker)
 {
 }
 
@@ -94,7 +96,7 @@ void WebServer::shutdown()
 
 HttpResponse WebServer::processGetAction(std::string path) const
 {
-    std::string nextPage = pageGenerator.getPage(path);
     actionController.execute(path);
+    std::string nextPage = pageGenerator.getPage(path);
     return HttpResponse(nextPage);
 }

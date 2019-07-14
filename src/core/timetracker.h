@@ -2,6 +2,7 @@
 #define TIMETRACKER_H
 
 #include <vector>
+#include <memory>
 #include "workday.h"
 
 /**
@@ -16,16 +17,20 @@ public:
     void startWorking();
     void stopWorking();
 
-    void addWorkDay(WorkDay wd);
-    bool replaceWorkDay(WorkDay wd, Date d);
+    bool isWorking() const;
+
+    void addWorkDay(std::shared_ptr<WorkDay> wd);
+    bool replaceWorkDay(std::shared_ptr<WorkDay> wd, Date d);
 
     Duration getWorkingDurationOfToday() const;
     Duration getWorkingDurationBetween(DateTime from, DateTime to) const;
 
-    WorkDay getWorkDay(Date day) const;
+    std::shared_ptr<WorkDay> getWorkDay(Date day) const;
+
+    std::vector<std::shared_ptr<WorkDay> > getWorkDays() const;
 
 private:
-    std::vector<WorkDay> _workDays;
+    std::vector<std::shared_ptr<WorkDay> > _workDays;
 
     size_t getWorkDayIndex(Date day) const;
 };

@@ -63,6 +63,13 @@ Duration GeneralWorkPeriod::getDuration() const
     return  start.distanceTo(end);
 }
 
+GeneralWorkPeriod::GeneralWorkPeriod(GeneralWorkPeriod wp):
+    _start  (wp.getStart()),
+    _end    (wp.getEnd())
+{
+
+}
+
 
 
 

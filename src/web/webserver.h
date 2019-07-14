@@ -10,6 +10,7 @@
 #include "http.h"
 #include "pagegenerator.h"
 #include "actioncontroller.h"
+#include "core/timetracker.h"
 
 namespace tt
 {
@@ -34,6 +35,8 @@ namespace tt
         int maxConnections;
         PageGenerator pageGenerator;
         ActionController actionController;
+
+        TimeTracker timeTracker;
     };
 }
 

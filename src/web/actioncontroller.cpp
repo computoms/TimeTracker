@@ -1,19 +1,26 @@
 #include "actioncontroller.h"
 #include "pagegenerator.h"
 
-ActionController::ActionController() {
+ActionController::ActionController(TimeTracker *tt):
+    timeTracker (tt)
+{
 
 }
 
 void ActionController::initializeActions()
 {
-    functions[PageAddress::StartWorking] = []() { /* TODO call TimeTracker::startWorking() */};
-    functions[PageAddress::StopWorking] = []() { /* TODO call TimeTracker::stopWorking() */};
-    functions[PageAddress::Quit] = []() { /* TODO stop working, save to file. */ };
+    functions[PageAddress::StartWorking] = [](TimeTracker *timeTracker) { timeTracker->startWorking(); };
+    functions[PageAddress::StopWorking] = [](TimeTracker *timeTracker) { timeTracker->stopWorking(); };
+    functions[PageAddress::Quit] = [](TimeTracker *timeTracker)
+            {
+                if (timeTracker->isWorking())
+                    timeTracker->stopWorking();
+                // TODO save to file if necessary
+            };
 }
 
 void ActionController::execute(std::string path) const
 {
     if (functions.find(path) != functions.end())
-        functions.at(path)();
+        functions.at(path)(timeTracker);
 }
