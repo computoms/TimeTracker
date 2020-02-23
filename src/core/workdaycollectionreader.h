@@ -10,7 +10,8 @@ public:
     WorkDayCollectionReader();
     ~WorkDayCollectionReader();
 
-    std::vector<WorkDay> readFromString(std::string xmlContent);
+    std::vector<std::shared_ptr<WorkDay>> read(std::string filename);
+    std::vector<std::shared_ptr<WorkDay>> readFromString(std::string xmlContent);
 };
 
 #endif // WORKDAYCOLLECTIONREADER_H

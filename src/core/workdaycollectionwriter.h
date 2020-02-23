@@ -7,14 +7,14 @@
 class WorkDayCollectionWriter
 {
 public:
-    WorkDayCollectionWriter(std::vector<WorkDay> workDayCollection);
+    WorkDayCollectionWriter(std::vector<std::shared_ptr<WorkDay>> workDayCollection);
     ~WorkDayCollectionWriter();
 
     void write(std::string filename) const;
     std::string writeToString() const;
 
 private:
-    std::vector<WorkDay> _workDays;
+    std::vector<std::shared_ptr<WorkDay>> _workDays;
 };
 
 #endif // WORKDAYCOLLECTIONWRITER_H

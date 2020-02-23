@@ -1,7 +1,8 @@
 #include "timetracker.h"
 #include "duration.h"
 
-TimeTracker::TimeTracker()
+TimeTracker::TimeTracker(Persistor *persistor):
+    _persistor  (persistor)
 {
 
 }
@@ -21,6 +22,7 @@ void TimeTracker::startWorking()
     }
 
     existing->addWorkPeriod(GeneralWorkPeriod(DateTime::now().getTimeOfDay()));
+    _persistor->save(this);
 }
 
 void TimeTracker::stopWorking()
@@ -30,11 +32,13 @@ void TimeTracker::stopWorking()
     {
         existing->getCurrentWorkPeriod()->setEnd();
     }
+    _persistor->save(this);
 }
 
 void TimeTracker::addWorkDay(std::shared_ptr<WorkDay> wd)
 {
     _workDays.push_back(wd);
+    _persistor->save(this);
 }
 
 bool TimeTracker::replaceWorkDay(std::shared_ptr<WorkDay> wd, Date d)
@@ -44,6 +48,7 @@ bool TimeTracker::replaceWorkDay(std::shared_ptr<WorkDay> wd, Date d)
         return false;
 
     _workDays[index] = wd;
+    _persistor->save(this);
     return true;
 }
 

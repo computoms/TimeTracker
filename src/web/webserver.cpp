@@ -12,7 +12,8 @@ WebServer::WebServer():
     serverSocket        (-1),
     isStarted           (false),
     maxConnections      (10),
-    timeTracker         (),
+    persistor           ("timetracker.xml"),
+    timeTracker         (&persistor),
     actionController    (&timeTracker),
     pageGenerator       (&timeTracker)
 {

@@ -11,7 +11,7 @@ struct xml_string_writer: pugi::xml_writer
     }
 };
 
-WorkDayCollectionWriter::WorkDayCollectionWriter(std::vector<WorkDay> workDayCollection):
+WorkDayCollectionWriter::WorkDayCollectionWriter(std::vector<std::shared_ptr<WorkDay>> workDayCollection):
     _workDays   (workDayCollection)
 {
 
@@ -38,13 +38,13 @@ std::string WorkDayCollectionWriter::writeToString() const
 
     for (size_t i(0); i < _workDays.size(); ++i)
     {
-        WorkDay d = _workDays[i];
+        std::shared_ptr<WorkDay> d = _workDays[i];
         xml_node day = coll.append_child("WorkDay");
         xml_node date = day.append_child("Date");
-        date.append_child(xml_node_type::node_pcdata).set_value(d.getTime().toString().c_str());
+        date.append_child(xml_node_type::node_pcdata).set_value(d->getTime().toString().c_str());
         xml_node xPeriods = day.append_child("WorkPeriods");
 
-        std::vector<GeneralWorkPeriod> periods = d.getWorkPeriods();
+        std::vector<GeneralWorkPeriod> periods = d->getWorkPeriods();
         for (size_t j(0); j < periods.size(); ++j)
         {
             xml_node xGP = xPeriods.append_child("GeneralWorkPeriod");
@@ -53,7 +53,7 @@ std::string WorkDayCollectionWriter::writeToString() const
         }
 
         xml_node xJournalEntries = day.append_child("JournalEntries");
-        std::vector<JournalEntry> journalEntries = d.getJournalEntries();
+        std::vector<JournalEntry> journalEntries = d->getJournalEntries();
         for (size_t j(0); j < journalEntries.size(); ++j)
         {
             xml_node xJN = xJournalEntries.append_child("JournalEntry");

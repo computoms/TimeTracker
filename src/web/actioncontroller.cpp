@@ -11,7 +11,10 @@ ActionController::ActionController(TimeTracker *tt):
 void ActionController::initializeActions()
 {
     functions[PageAddress::StartWorking] = [](TimeTracker *timeTracker) { timeTracker->startWorking(); };
-    functions[PageAddress::StopWorking] = [](TimeTracker *timeTracker) { timeTracker->stopWorking(); };
+    functions[PageAddress::StopWorking] = [](TimeTracker *timeTracker) 
+    { 
+        timeTracker->stopWorking();
+    };
     functions[PageAddress::Quit] = [](TimeTracker *timeTracker)
             {
                 if (timeTracker->isWorking())

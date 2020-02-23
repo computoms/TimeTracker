@@ -17,10 +17,10 @@ foreach(file IN LISTS SRCS_CLASSES)
     set(SRCS_FILES ${SRCS_FILES} ${CMAKE_CURRENT_SOURCE_DIR}/${file}.cpp)
 endforeach(file)
 
-add_executable(webserver_Test
-        ${HDRS_FILES} ${SRCS_FILES} test.cpp)
-target_link_libraries(webserver_Test TimeTracker_CLion)
-target_include_directories(webserver_Test PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../)
+add_executable(${PROJECT_NAME}
+        ${HDRS_FILES} ${SRCS_FILES} serve.cpp)
+target_link_libraries(${PROJECT_NAME} TimeTracker_Core)
+target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../)
 
-add_executable(webclient_Test
+add_executable(Test_webclient
         client.cpp)

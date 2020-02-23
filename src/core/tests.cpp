@@ -6,6 +6,16 @@
 #include "workdaycollectionwriter.h"
 #include "workdaycollectionreader.h"
 
+class MockPersistor : public Persistor
+{
+public:
+    MockPersistor()
+    {}
+
+    virtual void save(TimeTracker *tt) const {} 
+    virtual void read(TimeTracker *tt) const {}
+};
+
 TEST_CASE("Duration::operator/")
 {
     Duration d(0, TimeOfDay(10, 0, 0));
@@ -162,7 +172,8 @@ TEST_CASE("WorkDay::getWorkTime")
 
 TEST_CASE("TimeTracker::getWorkDay returns 'Null' workday if nothing exists")
 {
-    TimeTracker tt;
+    MockPersistor persistor;
+    TimeTracker tt(&persistor);
     std::shared_ptr<WorkDay> wd = tt.getWorkDay(Date());
     REQUIRE(wd->getTime().getDate().year == 0);
     REQUIRE(wd->getTime().getDate().month == 0);
@@ -174,7 +185,8 @@ TEST_CASE("TimeTracker::getWorkDay returns right workday if exists")
     std::shared_ptr<WorkDay> existingWd(std::make_shared<WorkDay>(Date(2018, 01, 01)));
     WorkDay testingWd(Date(2018, 01, 01));
 
-    TimeTracker tt;
+    MockPersistor persisotr;
+    TimeTracker tt(&persisotr);
     tt.addWorkDay(existingWd);
 
     REQUIRE(tt.getWorkDay(testingWd.getTime().getDate())->getTime().getDate().year == existingWd->getTime().getDate().year);
@@ -184,7 +196,8 @@ TEST_CASE("TimeTracker::getWorkDay returns right workday if exists")
 
 TEST_CASE("TimeTracker::startWorking adds a workDay")
 {
-    TimeTracker tt;
+    MockPersistor persisotr;
+    TimeTracker tt(&persisotr);
     std::shared_ptr<WorkDay> emptyWordDay = tt.getWorkDay((DateTime::today().getDate()));
     REQUIRE(DateTime::areDatesEqual(emptyWordDay->getTime().getDate(), Date()));
     tt.startWorking();
@@ -194,7 +207,8 @@ TEST_CASE("TimeTracker::startWorking adds a workDay")
 
 TEST_CASE("TimeTracker::getWorkingDurationOfToday")
 {
-    TimeTracker tt;
+    MockPersistor persisotr;
+    TimeTracker tt(&persisotr);
     std::shared_ptr<WorkDay> wd(std::make_shared<WorkDay>(DateTime::today().getDate()));
     wd->addWorkPeriod(GeneralWorkPeriod(
                          TimeOfDay(10, 0, 0),
@@ -224,7 +238,8 @@ TEST_CASE("TimeTracker::getTimeDurationBetween")
     w3->addWorkPeriod(wd3);
     w4->addWorkPeriod(wd4);
 
-    TimeTracker tt;
+    MockPersistor persisotr;
+    TimeTracker tt(&persisotr);
     tt.addWorkDay(w1);
     tt.addWorkDay(w2);
     tt.addWorkDay(w3);
@@ -245,12 +260,12 @@ TEST_CASE("TimePlanner::getTotalExtraTime")
 
 TEST_CASE("WorkDayCollectionWriter::writeToString")
 {
-    std::vector<WorkDay> days;
-    WorkDay d1(Date(2018, 1, 1));
-    d1.addWorkPeriod(GeneralWorkPeriod(TimeOfDay(10, 0, 0),
+    std::vector<std::shared_ptr<WorkDay>> days;
+    std::shared_ptr<WorkDay> d1(std::make_shared<WorkDay>(Date(2018, 1, 1)));
+    d1->addWorkPeriod(GeneralWorkPeriod(TimeOfDay(10, 0, 0),
                                        TimeOfDay(12, 0, 0)));
-    WorkDay d2(Date(2018, 1, 2));
-    d2.addWorkPeriod(GeneralWorkPeriod(TimeOfDay(9, 0, 0),
+    std::shared_ptr<WorkDay> d2(std::make_shared<WorkDay>(Date(2018, 1, 2)));
+    d2->addWorkPeriod(GeneralWorkPeriod(TimeOfDay(9, 0, 0),
                                        TimeOfDay(12, 0, 0)));
 
     days.push_back(d1);
@@ -323,32 +338,32 @@ TEST_CASE("WorkDayCollectionReader::readFromString")
     str += "</WorkDayCollection>" + nl;
 
     WorkDayCollectionReader reader;
-    std::vector<WorkDay> workDays = reader.readFromString(str);
+    std::vector<std::shared_ptr<WorkDay>> workDays = reader.readFromString(str);
 
     REQUIRE(workDays.size() == 2);
-    WorkDay d1 = workDays[0];
-    REQUIRE(d1.getTime().isSameDayAs(DateTime(Date(2018,1,1))));
-    REQUIRE(d1.getWorkPeriods().size() == 1);
-    GeneralWorkPeriod p1 = d1.getWorkPeriods()[0];
+    std::shared_ptr<WorkDay> d1 = workDays[0];
+    REQUIRE(d1->getTime().isSameDayAs(DateTime(Date(2018,1,1))));
+    REQUIRE(d1->getWorkPeriods().size() == 1);
+    GeneralWorkPeriod p1 = d1->getWorkPeriods()[0];
     REQUIRE(p1.getStart().hours == 10);
     REQUIRE(p1.getStart().minutes == 0);
     REQUIRE(p1.getStart().seconds == 0);
     REQUIRE(p1.getEnd().hours == 12);
     REQUIRE(p1.getEnd().minutes == 0);
     REQUIRE(p1.getEnd().seconds == 0);
-    REQUIRE(d1.getJournalEntries().size() == 0);
+    REQUIRE(d1->getJournalEntries().size() == 0);
 
-    WorkDay d2 = workDays[1];
-    REQUIRE(d2.getTime().isSameDayAs(DateTime(Date(2018,1,2))));
-    REQUIRE(d2.getWorkPeriods().size() == 1);
-    GeneralWorkPeriod p2 = d2.getWorkPeriods()[0];
+    std::shared_ptr<WorkDay> d2 = workDays[1];
+    REQUIRE(d2->getTime().isSameDayAs(DateTime(Date(2018,1,2))));
+    REQUIRE(d2->getWorkPeriods().size() == 1);
+    GeneralWorkPeriod p2 = d2->getWorkPeriods()[0];
     REQUIRE(p2.getStart().hours == 9);
     REQUIRE(p2.getStart().minutes == 0);
     REQUIRE(p2.getStart().seconds == 0);
     REQUIRE(p2.getEnd().hours == 12);
     REQUIRE(p2.getEnd().minutes == 0);
     REQUIRE(p2.getEnd().seconds == 0);
-    REQUIRE(d2.getJournalEntries().size() == 0);
+    REQUIRE(d2->getJournalEntries().size() == 0);
 }
 
 #ifdef LONGTESTS

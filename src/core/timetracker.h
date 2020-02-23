@@ -4,6 +4,7 @@
 #include <vector>
 #include <memory>
 #include "workday.h"
+#include "persistor.h"
 
 /**
  * @brief The TimeTracker class handles the registration and retreival of working times.
@@ -11,7 +12,7 @@
 class TimeTracker
 {
 public:
-    TimeTracker();
+    TimeTracker(Persistor *persistor);
     ~TimeTracker();
 
     void startWorking();
@@ -31,6 +32,7 @@ public:
 
 private:
     std::vector<std::shared_ptr<WorkDay> > _workDays;
+    Persistor *_persistor;
 
     size_t getWorkDayIndex(Date day) const;
 };

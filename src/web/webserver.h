@@ -36,6 +36,7 @@ namespace tt
         PageGenerator pageGenerator;
         ActionController actionController;
 
+        FilePersistor persistor;
         TimeTracker timeTracker;
     };
 }
