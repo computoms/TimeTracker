@@ -1,66 +1,10 @@
 #include "pagegenerator.h"
-
-std::string PageAddress::Quit = "/quit?";
-std::string PageAddress::Main = "/";
-std::string PageAddress::StartWorking = "/start-working?";
-std::string PageAddress::StopWorking = "/stop-working?";
+#include "pageaddress.h"
 
 PageGenerator::PageGenerator(TimeTracker *tt):
     timeTracker (tt)
 {
 
-}
-
-std::string PageGenerator::mainPage() const
-{
-    std::string page = "<form action=\"/start-working\">"
-                  "    <input type=\"submit\" value=\"Start working\" />"
-                  "</form>"
-                  "<form action=\"/quit\">"
-                  "    <input type=\"submit\" value=\"Quit\" />"
-                  "</form>";
-    auto workDays = timeTracker->getWorkDays();
-    for (auto &wd : workDays)
-    {
-        page += "<div>Work day " + wd->getTime().toString() + "<br/>";
-        for (auto &wp : wd->getWorkPeriods())
-        {
-            page += std::string("<p>Work period: ") + std::to_string(wp.getDuration().getHours())
-                    + "h, " + std::to_string(wp.getDuration().getMinutes()) + "m,</p>";
-        }
-        page += "</div>";
-    }
-
-
-    return englobeInHtml(page);
-}
-
-std::string PageGenerator::englobeInHtml(std::string content) const
-{
-    return "<html><head><title>Time Tracker</title></head><body>"
-           + content + "</body></html>";
-}
-
-std::string PageGenerator::startWorkingPage() const
-{
-    return englobeInHtml(
-            "<form action=\"/stop-working\">"
-            "    <input type=\"submit\" value=\"Stop working\" />"
-            "</form>"
-            "<form action=\"/quit\">"
-            "    <input type=\"submit\" value=\"Quit\" />"
-            "</form>");
-}
-
-std::string PageGenerator::quitPage() const
-{
-    return englobeInHtml("Application has been closed.");
-}
-
-std::string PageGenerator::pageNotFound(std::string path) const
-{
-    return englobeInHtml("<p>You requested the page '" + path + "'.</p>"
-                                                                "<form action=\"\"><input type=\"submit\" value=\"Go to Main\" /></form>");
 }
 
 void PageGenerator::initialize()
@@ -76,5 +20,60 @@ std::string PageGenerator::getPage(std::string address) const
 {
     if (pages.find(address) == pages.end())
         return pageNotFound(address);
-    return pages.at(address)(this);
+    return englobeInHtml(
+        pages.at(address)(this));
+}
+
+//
+// Pages
+//
+
+std::string PageGenerator::mainPage() const
+{
+    std::string page = makeActionButton("Start working", "start-working") + makeActionButton("Quit", "quit");
+    auto workDays = timeTracker->getWorkDays();
+    for (auto &wd : workDays)
+    {
+        page += "<div>Work day " + wd->getTime().toString() + "<br/>";
+        for (auto &wp : wd->getWorkPeriods())
+        {
+            page += std::string("<p>Work period: ") + std::to_string(wp.getDuration().getHours())
+                    + "h, " + std::to_string(wp.getDuration().getMinutes()) + "m,</p>";
+        }
+        page += "</div>";
+    }
+
+
+    return page;
+}
+
+std::string PageGenerator::startWorkingPage() const
+{
+    return makeActionButton("Stop working", "stop-working") + makeActionButton("Quit", "quit");
+}
+
+std::string PageGenerator::quitPage() const
+{
+    return "Application has been closed.";
+}
+
+std::string PageGenerator::pageNotFound(std::string path) const
+{
+    return "<p>Page not found. <br/>You requested the page '" + path + "'.</p>"
+        + makeActionButton("Go to main", "");
+}
+
+// 
+// Utilities
+//
+
+std::string PageGenerator::englobeInHtml(std::string content) const
+{
+    return "<html><head><title>Time Tracker</title></head><body>"
+           + content + "</body></html>";
+}
+
+std::string PageGenerator::makeActionButton(std::string buttonText, std::string action) const
+{
+    return "<form action=\"/" + action + "\">    <input type=\"submit\" value=\"" + buttonText + "\" /></form>";
 }

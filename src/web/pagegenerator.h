@@ -6,15 +6,6 @@
 
 #include "core/timetracker.h"
 
-class PageAddress
-{
-public:
-    static std::string Quit;
-    static std::string Main;
-    static std::string StartWorking;
-    static std::string StopWorking;
-};
-
 class PageGenerator;
 
 typedef std::string (*GenerateHttpPage)(const PageGenerator *pg);
@@ -34,7 +25,9 @@ private:
     std::string quitPage() const;
     std::string pageNotFound(std::string path) const;
 
+    // Utils
     std::string englobeInHtml(std::string content) const;
+    std::string makeActionButton(std::string buttonText, std::string action) const;
 
     std::map<std::string, GenerateHttpPage> pages;
     TimeTracker *timeTracker;

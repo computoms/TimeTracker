@@ -1,5 +1,6 @@
 #include "webserver.h"
 #include "clientsocket.h"
+#include "pageaddress.h"
 
 #include <string.h>
 #include <sstream>

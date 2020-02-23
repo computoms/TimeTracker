@@ -1,5 +1,6 @@
 #include "actioncontroller.h"
 #include "pagegenerator.h"
+#include "pageaddress.h"
 
 ActionController::ActionController(TimeTracker *tt):
     timeTracker (tt)

@@ -21,6 +21,13 @@ GeneralWorkPeriod::GeneralWorkPeriod(TimeOfDay start, TimeOfDay end):
 
 }
 
+GeneralWorkPeriod::GeneralWorkPeriod(GeneralWorkPeriod const &wp):
+    _start  (wp.getStart()),
+    _end    (wp.getEnd())
+{
+
+}
+
 GeneralWorkPeriod::~GeneralWorkPeriod()
 {
 
@@ -63,12 +70,7 @@ Duration GeneralWorkPeriod::getDuration() const
     return  start.distanceTo(end);
 }
 
-GeneralWorkPeriod::GeneralWorkPeriod(GeneralWorkPeriod wp):
-    _start  (wp.getStart()),
-    _end    (wp.getEnd())
-{
 
-}
 
 
 

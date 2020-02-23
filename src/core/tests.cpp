@@ -163,40 +163,40 @@ TEST_CASE("WorkDay::getWorkTime")
 TEST_CASE("TimeTracker::getWorkDay returns 'Null' workday if nothing exists")
 {
     TimeTracker tt;
-    WorkDay wd = tt.getWorkDay(Date());
-    REQUIRE(wd.getTime().getDate().year == 0);
-    REQUIRE(wd.getTime().getDate().month == 0);
-    REQUIRE(wd.getTime().getDate().dayOfMonth == 0);
+    std::shared_ptr<WorkDay> wd = tt.getWorkDay(Date());
+    REQUIRE(wd->getTime().getDate().year == 0);
+    REQUIRE(wd->getTime().getDate().month == 0);
+    REQUIRE(wd->getTime().getDate().dayOfMonth == 0);
 }
 
 TEST_CASE("TimeTracker::getWorkDay returns right workday if exists")
 {
-    WorkDay existingWd(Date(2018, 01, 01));
+    std::shared_ptr<WorkDay> existingWd(std::make_shared<WorkDay>(Date(2018, 01, 01)));
     WorkDay testingWd(Date(2018, 01, 01));
 
     TimeTracker tt;
     tt.addWorkDay(existingWd);
 
-    REQUIRE(tt.getWorkDay(testingWd.getTime().getDate()).getTime().getDate().year == existingWd.getTime().getDate().year);
-    REQUIRE(tt.getWorkDay(testingWd.getTime().getDate()).getTime().getDate().month == existingWd.getTime().getDate().month);
-    REQUIRE(tt.getWorkDay(testingWd.getTime().getDate()).getTime().getDate().dayOfMonth == existingWd.getTime().getDate().dayOfMonth);
+    REQUIRE(tt.getWorkDay(testingWd.getTime().getDate())->getTime().getDate().year == existingWd->getTime().getDate().year);
+    REQUIRE(tt.getWorkDay(testingWd.getTime().getDate())->getTime().getDate().month == existingWd->getTime().getDate().month);
+    REQUIRE(tt.getWorkDay(testingWd.getTime().getDate())->getTime().getDate().dayOfMonth == existingWd->getTime().getDate().dayOfMonth);
 }
 
 TEST_CASE("TimeTracker::startWorking adds a workDay")
 {
     TimeTracker tt;
-    WorkDay emptyWordDay = tt.getWorkDay((DateTime::today().getDate()));
-    REQUIRE(DateTime::areDatesEqual(emptyWordDay.getTime().getDate(), Date()));
+    std::shared_ptr<WorkDay> emptyWordDay = tt.getWorkDay((DateTime::today().getDate()));
+    REQUIRE(DateTime::areDatesEqual(emptyWordDay->getTime().getDate(), Date()));
     tt.startWorking();
-    WorkDay wd = tt.getWorkDay(DateTime::today().getDate());
-    REQUIRE(DateTime::areDatesEqual(wd.getTime().getDate(), Date()) == false);
+    std::shared_ptr<WorkDay> wd = tt.getWorkDay(DateTime::today().getDate());
+    REQUIRE(DateTime::areDatesEqual(wd->getTime().getDate(), Date()) == false);
 }
 
 TEST_CASE("TimeTracker::getWorkingDurationOfToday")
 {
     TimeTracker tt;
-    WorkDay wd(DateTime::today().getDate());
-    wd.addWorkPeriod(GeneralWorkPeriod(
+    std::shared_ptr<WorkDay> wd(std::make_shared<WorkDay>(DateTime::today().getDate()));
+    wd->addWorkPeriod(GeneralWorkPeriod(
                          TimeOfDay(10, 0, 0),
                          TimeOfDay(12, 0, 0)));
     tt.addWorkDay(wd);
@@ -215,14 +215,14 @@ TEST_CASE("TimeTracker::getTimeDurationBetween")
     GeneralWorkPeriod wd4(TimeOfDay(10, 0, 0),
                 TimeOfDay(15, 0, 0));
 
-    WorkDay w1(Date(2018, 1, 1));
-    WorkDay w2(Date(2018, 1, 2));
-    WorkDay w3(Date(2018, 1, 3));
-    WorkDay w4(Date(2018, 1, 4));
-    w1.addWorkPeriod(wd1);
-    w2.addWorkPeriod(wd2);
-    w3.addWorkPeriod(wd3);
-    w4.addWorkPeriod(wd4);
+    std::shared_ptr<WorkDay> w1(std::make_shared<WorkDay>(Date(2018, 1, 1)));
+    std::shared_ptr<WorkDay> w2(std::make_shared<WorkDay>(Date(2018, 1, 2)));
+    std::shared_ptr<WorkDay> w3(std::make_shared<WorkDay>(Date(2018, 1, 3)));
+    std::shared_ptr<WorkDay> w4(std::make_shared<WorkDay>(Date(2018, 1, 4)));
+    w1->addWorkPeriod(wd1);
+    w2->addWorkPeriod(wd2);
+    w3->addWorkPeriod(wd3);
+    w4->addWorkPeriod(wd4);
 
     TimeTracker tt;
     tt.addWorkDay(w1);

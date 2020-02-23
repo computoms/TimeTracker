@@ -5,7 +5,8 @@ list(APPEND SRCS_CLASSES
         http
         clientsocket
         pagegenerator
-        actioncontroller)
+        actioncontroller
+        pageaddress)
 
 set(SRC_DIR "src/web")
 
