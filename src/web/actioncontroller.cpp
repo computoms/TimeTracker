@@ -3,16 +3,16 @@
 #include "pageaddress.h"
 
 ActionController::ActionController(TimeTracker *tt):
-    timeTracker (tt)
+    _timeTracker (tt)
 {
 
 }
 
 void ActionController::initializeActions()
 {
-    functions[PageAddress::StartWorking] = [](TimeTracker *timeTracker) { timeTracker->startWorking(); };
-    functions[PageAddress::StopWorking] = [](TimeTracker *timeTracker) { timeTracker->stopWorking(); };
-    functions[PageAddress::Quit] = [](TimeTracker *timeTracker)
+    _functions[PageAddress::StartWorking] = [](TimeTracker *timeTracker) { timeTracker->startWorking(); };
+    _functions[PageAddress::StopWorking] = [](TimeTracker *timeTracker) { timeTracker->stopWorking(); };
+    _functions[PageAddress::Quit] = [](TimeTracker *timeTracker)
             {
                 if (timeTracker->isWorking())
                     timeTracker->stopWorking();
@@ -21,6 +21,6 @@ void ActionController::initializeActions()
 
 void ActionController::execute(std::string path) const
 {
-    if (functions.find(path) != functions.end())
-        functions.at(path)(timeTracker);
+    if (_functions.find(path) != _functions.end())
+        _functions.at(path)(_timeTracker);
 }

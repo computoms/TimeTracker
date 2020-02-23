@@ -29,8 +29,8 @@ private:
     std::string englobeInHtml(std::string content) const;
     std::string makeActionButton(std::string buttonText, std::string action) const;
 
-    std::map<std::string, GenerateHttpPage> pages;
-    TimeTracker *timeTracker;
+    std::map<std::string, GenerateHttpPage> _pages;
+    TimeTracker *_timeTracker;
 };
 
 #endif // TT_PAGE_GENERATOR_H

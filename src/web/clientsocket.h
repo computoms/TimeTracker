@@ -21,9 +21,9 @@ namespace tt
         void close() const;
 
     private:
-        int serverSocket;
-        struct sockaddr * serverAddress;
-        int clientSocket;
+        int _serverSocket;
+        struct sockaddr * _serverAddress;
+        int _clientSocket;
     };
 }
 

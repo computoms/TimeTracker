@@ -9,29 +9,29 @@
 using namespace tt;
 
 ClientSocket::ClientSocket(int server, struct ::sockaddr *address):
-    serverSocket        (server),
-    serverAddress       (address),
-    clientSocket        (-1)
+    _serverSocket        (server),
+    _serverAddress       (address),
+    _clientSocket        (-1)
 {
 
 }
 
 bool ClientSocket::accept()
 {
-    socklen_t addrlen = sizeof(serverAddress);
-    clientSocket = ::accept(serverSocket, (struct ::sockaddr *)&serverAddress, (socklen_t*)&addrlen);
+    socklen_t addrlen = sizeof(_serverAddress);
+    _clientSocket = ::accept(_serverSocket, (struct ::sockaddr *)_serverAddress, (socklen_t*)&addrlen);
     printf("\n+++++++ Waiting for new connection ++++++++\n\n");
-    return clientSocket >= 0;
+    return _clientSocket >= 0;
 }
 
 int ClientSocket::socket() const
 {
-    return clientSocket;
+    return _clientSocket;
 }
 
 void ClientSocket::close() const
 {
-    ::close(clientSocket);
+    ::close(_clientSocket);
 }
 
 HttpRequest ClientSocket::read() const

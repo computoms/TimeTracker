@@ -18,8 +18,8 @@ namespace tt
         void makeHeader(std::string content);
 
     private:
-        std::string header;
-        std::string htmlContent;
+        std::string _header;
+        std::string _htmlContent;
     };
 
     enum RequestType {
@@ -43,9 +43,9 @@ namespace tt
         void parseData(std::string data);
 
     private:
-        RequestType requestType;
+        RequestType _requestType;
 
-        std::string path;
+        std::string _path;
 
     };
 }

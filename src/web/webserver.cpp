@@ -9,57 +9,57 @@
 using namespace tt;
 
 WebServer::WebServer():
-    serverSocket        (-1),
-    isStarted           (false),
-    maxConnections      (10),
-    persistor           ("timetracker.xml"),
-    timeTracker         (&persistor),
-    actionController    (&timeTracker),
-    pageGenerator       (&timeTracker)
+    _serverSocket        (-1),
+    _isStarted           (false),
+    _maxConnections      (10),
+    _persistor           ("timetracker.xml"),
+    _timeTracker         (&_persistor),
+    _actionController    (&_timeTracker),
+    _pageGenerator       (&_timeTracker)
 {
 }
 
 void WebServer::initialize(std::string ipAddress, unsigned short port)
 {
-    serverSocket = socket(AF_INET, SOCK_STREAM, 0);
-    if (serverSocket == 0)
+    _serverSocket = socket(AF_INET, SOCK_STREAM, 0);
+    if (_serverSocket == 0)
     {
         perror("In socket");
         exit(EXIT_FAILURE); // TODO Error
     }
 
 
-    address.sin_family = AF_INET;
-    address.sin_addr.s_addr = inet_addr(ipAddress.c_str());
-    address.sin_port = htons( port );
-    memset(address.sin_zero, '\0', sizeof address.sin_zero);
+    _address.sin_family = AF_INET;
+    _address.sin_addr.s_addr = inet_addr(ipAddress.c_str());
+    _address.sin_port = htons( port );
+    memset(_address.sin_zero, '\0', sizeof _address.sin_zero);
 
-    int ret = bind(serverSocket, (struct sockaddr *)&address, sizeof(address));
+    int ret = bind(_serverSocket, (struct sockaddr *)&_address, sizeof(_address));
     if (ret < 0)
     {
         perror("In bind");
         exit(EXIT_FAILURE); // Todo Error
     }
 
-    pageGenerator.initialize();
-    actionController.initializeActions();
-    timeTracker.load();
+    _pageGenerator.initialize();
+    _actionController.initializeActions();
+    _timeTracker.load();
 }
 
 void WebServer::start()
 {
 
-    if (listen(serverSocket, maxConnections) < 0)
+    if (listen(_serverSocket, _maxConnections) < 0)
     {
         perror("In listen");
         exit(EXIT_FAILURE); // TODO Error
     }
 
-    isStarted = true;
+    _isStarted = true;
 
-    while(isStarted)
+    while(_isStarted)
     {
-        ClientSocket client(serverSocket, (struct sockaddr *)&address);
+        ClientSocket client(_serverSocket, (struct sockaddr *)&_address);
 
         if (!client.accept())
         {
@@ -82,24 +82,24 @@ void WebServer::start()
 
         if (request.getType() == Request_Get && request.getPath() == PageAddress::Quit)
         {
-            isStarted = false;
+            _isStarted = false;
         }
     }
 }
 
 void WebServer::stop()
 {
-    isStarted = false;
+    _isStarted = false;
 }
 
 void WebServer::shutdown()
 {
-    ::close(serverSocket);
+    ::close(_serverSocket);
 }
 
 HttpResponse WebServer::processGetAction(std::string path) const
 {
-    actionController.execute(path);
-    std::string nextPage = pageGenerator.getPage(path);
+    _actionController.execute(path);
+    std::string nextPage = _pageGenerator.getPage(path);
     return HttpResponse(nextPage);
 }

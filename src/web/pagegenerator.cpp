@@ -2,7 +2,7 @@
 #include "pageaddress.h"
 
 PageGenerator::PageGenerator(TimeTracker *tt):
-    timeTracker (tt)
+    _timeTracker (tt)
 {
 
 }
@@ -10,18 +10,18 @@ PageGenerator::PageGenerator(TimeTracker *tt):
 void PageGenerator::initialize()
 {
     // Generate known pages
-    pages[PageAddress::Main] = [] (const PageGenerator *pg) -> std::string { return pg->mainPage(); };
-    pages[PageAddress::StartWorking] = [] (const PageGenerator *pg) -> std::string { return pg->startWorkingPage(); };
-    pages[PageAddress::StopWorking] = [] (const PageGenerator *pg) -> std::string { return pg->mainPage(); };
-    pages[PageAddress::Quit] = [] (const PageGenerator *pg) -> std::string { return pg->quitPage(); };
+    _pages[PageAddress::Main] = [] (const PageGenerator *pg) -> std::string { return pg->mainPage(); };
+    _pages[PageAddress::StartWorking] = [] (const PageGenerator *pg) -> std::string { return pg->startWorkingPage(); };
+    _pages[PageAddress::StopWorking] = [] (const PageGenerator *pg) -> std::string { return pg->mainPage(); };
+    _pages[PageAddress::Quit] = [] (const PageGenerator *pg) -> std::string { return pg->quitPage(); };
 }
 
 std::string PageGenerator::getPage(std::string address) const
 {
-    if (pages.find(address) == pages.end())
+    if (_pages.find(address) == _pages.end())
         return pageNotFound(address);
     return englobeInHtml(
-        pages.at(address)(this));
+        _pages.at(address)(this));
 }
 
 //
@@ -31,7 +31,7 @@ std::string PageGenerator::getPage(std::string address) const
 std::string PageGenerator::mainPage() const
 {
     std::string page = makeActionButton("Start working", "start-working") + makeActionButton("Quit", "quit");
-    auto workDays = timeTracker->getWorkDays();
+    auto workDays = _timeTracker->getWorkDays();
     for (auto &wd : workDays)
     {
         page += "<div>Work day " + wd->getTime().toString() + "<br/>";

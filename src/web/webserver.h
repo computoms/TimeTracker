@@ -28,16 +28,16 @@ namespace tt
         HttpResponse processGetAction(std::string path) const;
 
     private:
-        int serverSocket;
-        bool isStarted;
+        int _serverSocket;
+        bool _isStarted;
 
-        struct sockaddr_in address;
-        int maxConnections;
-        PageGenerator pageGenerator;
-        ActionController actionController;
+        struct sockaddr_in _address;
+        int _maxConnections;
+        PageGenerator _pageGenerator;
+        ActionController _actionController;
 
-        FilePersistor persistor;
-        TimeTracker timeTracker;
+        FilePersistor _persistor;
+        TimeTracker _timeTracker;
     };
 }
 

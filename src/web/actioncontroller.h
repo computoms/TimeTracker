@@ -18,8 +18,8 @@ public:
     void execute(std::string path) const;
 
 private:
-    std::map<std::string, ActionFunction> functions;
-    TimeTracker *timeTracker;
+    std::map<std::string, ActionFunction> _functions;
+    TimeTracker *_timeTracker;
 };
 
 #endif // TT_ACTION_CONTROLLER_H

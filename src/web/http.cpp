@@ -9,7 +9,7 @@ using namespace tt;
 HttpResponse::HttpResponse(std::string content)
 {
     makeHeader(content);
-    htmlContent = content;
+    _htmlContent = content;
 }
 
 void HttpResponse::makeHeader(std::string content)
@@ -22,14 +22,14 @@ void HttpResponse::makeHeader(std::string content)
     ss << "Content-Length: " << content.size() << "\r\n";
     ss << "\r\n";
 
-    header = ss.str();
+    _header = ss.str();
 }
 
 std::string HttpResponse::getSocketData() const
 {
     std::stringstream ss;
-    ss << header;
-    ss << htmlContent;
+    ss << _header;
+    ss << _htmlContent;
     return ss.str();
 }
 
@@ -41,21 +41,21 @@ void HttpResponse::sendTo(const ClientSocket &client) const
 }
 
 HttpRequest::HttpRequest():
-    requestType (Request_Invalid),
-    path        ("")
+    _requestType (Request_Invalid),
+    _path        ("")
 {
 }
 
 RequestType HttpRequest::getType() const
 {
-    return requestType;
+    return _requestType;
 }
 
 void HttpRequest::parseData(std::string data)
 {
     if (data.size() == 0)
     {
-        requestType = Request_Invalid;
+        _requestType = Request_Invalid;
         return;
     }
 
@@ -67,35 +67,35 @@ void HttpRequest::parseData(std::string data)
     size_t spacePos = data.find(' ');
     if (spacePos == std::string::npos)
     {
-        requestType = Request_Invalid;
+        _requestType = Request_Invalid;
         return;
     }
     std::string type = data.substr(0, spacePos);
     if (type.compare("GET") == 0)
     {
-        requestType = Request_Get;
+        _requestType = Request_Get;
         size_t pathPos = data.find(' ', spacePos + 1);
         if (pathPos == std::string::npos)
         {
-            requestType = Request_Invalid;
+            _requestType = Request_Invalid;
             return;
         }
-        path = data.substr(spacePos + 1, pathPos - spacePos - 1);
-        std::cout << "GET request @ path " << path << std::endl;
+        _path = data.substr(spacePos + 1, pathPos - spacePos - 1);
+        std::cout << "GET request @ path " << _path << std::endl;
     }
     else if (type.compare("POST") == 0)
     {
-        requestType = Request_Post;
+        _requestType = Request_Post;
     }
     else
     {
-        requestType = Request_Invalid;
+        _requestType = Request_Invalid;
     }
 }
 
 std::string HttpRequest::getPath() const
 {
-    return path;
+    return _path;
 }
 
 void HttpRequest::read(const ClientSocket &client)
