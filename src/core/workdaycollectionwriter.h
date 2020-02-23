@@ -4,6 +4,9 @@
 #include <vector>
 #include <string>
 
+/**
+ * @brief The WorkDayCollectionWriter handles the persistence of the TimeTracker class to an xml store.
+ */
 class WorkDayCollectionWriter
 {
 public:

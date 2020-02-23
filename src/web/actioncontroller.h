@@ -8,6 +8,10 @@
 // Defines a function that executes an action in the back-end
 typedef void (*ActionFunction)(TimeTracker *timeTracker);
 
+/**
+ * @brief The ActionController manages the transitions (and actions)
+ * performed within the application's UI. 
+ */
 class ActionController
 {
 public:

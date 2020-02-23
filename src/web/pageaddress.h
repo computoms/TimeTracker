@@ -3,6 +3,10 @@
 
 #include <string>
 
+/**
+ * @brief The PageAddress class is a static class listing the 
+ * valid pages of the application's UI.
+ */
 class PageAddress
 {
 public:

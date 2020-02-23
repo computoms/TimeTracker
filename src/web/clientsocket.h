@@ -6,6 +6,9 @@
 
 class HttpRequest;
 
+/**
+ * @brief The ClientSocket class presents a TCP client of the webserver.
+ */
 class ClientSocket
 {
 public:

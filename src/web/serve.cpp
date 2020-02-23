@@ -8,6 +8,9 @@
 #include <string.h>
 #include <sstream>
 
+/**
+ * Main program to start the web server.
+ */
 int main()
 {
     WebServer server;

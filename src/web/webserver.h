@@ -12,6 +12,10 @@
 #include "actioncontroller.h"
 #include "core/timetracker.h"
 
+/**
+ * @brief The WebServer class hanldes the HTTP requests from/to a web-client.
+ * It is the main entry-point for processing requests to the TimeTracker API.
+ */
 class WebServer
 {
 public:

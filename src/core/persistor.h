@@ -5,7 +5,7 @@
 class TimeTracker;
 
 /**
- * Helper class to save the state of the TimeTracker class.
+ * @brief Helper class to save the state of the TimeTracker class.
  */
 class Persistor
 {
@@ -15,7 +15,7 @@ public:
 };
 
 /**
- * Persistance class to a file on the file system, using XML format.
+ * @brief Persistance class to a file on the file system, using XML format.
  */
 class FilePersistor : public Persistor
 {

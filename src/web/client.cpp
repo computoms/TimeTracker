@@ -9,6 +9,10 @@
 
 #define PORT 8080
 
+/**
+ * This program implements a simple test of an HTTP client.
+ * To be started once the webserver has been started.
+ */
 int main(int argc, char const *argv[])
 {
     int sock = 0; long valread;

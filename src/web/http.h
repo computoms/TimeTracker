@@ -4,6 +4,9 @@
 #include <string>
 #include "clientsocket.h"
 
+/**
+ * @brief The HttpResponse class represents an HTTP response (TCP).
+ */
 class HttpResponse
 {
 public:
@@ -26,7 +29,9 @@ enum RequestType {
     Request_Invalid
 };
 
-
+/**
+ * @brief The HttpRequest class represents an HTTP request (TCP).
+ */
 class HttpRequest
 {
 public:

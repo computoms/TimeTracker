@@ -10,6 +10,10 @@ class PageGenerator;
 
 typedef std::string (*GenerateHttpPage)(const PageGenerator *pg);
 
+/**
+ * @brief The PageGenerator class manages the generation of HTTP pages as user interfaces
+ * for the application.
+ */
 class PageGenerator
 {
 public:
