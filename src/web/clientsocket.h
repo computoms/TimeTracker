@@ -4,27 +4,24 @@
 #include <unistd.h>
 #include <sys/socket.h>
 
-namespace tt
+class HttpRequest;
+
+class ClientSocket
 {
-    class HttpRequest;
+public:
+    ClientSocket(int server, struct ::sockaddr * address);
 
-    class ClientSocket
-    {
-    public:
-        ClientSocket(int server, struct ::sockaddr * address);
+    bool accept();
+    HttpRequest read() const;
 
-        bool accept();
-        HttpRequest read() const;
+    int socket() const;
 
-        int socket() const;
+    void close() const;
 
-        void close() const;
-
-    private:
-        int _serverSocket;
-        struct sockaddr * _serverAddress;
-        int _clientSocket;
-    };
-}
+private:
+    int _serverSocket;
+    struct sockaddr * _serverAddress;
+    int _clientSocket;
+};
 
 #endif // TT_CLIENTSOCKET_H

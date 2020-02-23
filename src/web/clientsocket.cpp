@@ -1,12 +1,7 @@
 #include "clientsocket.h"
-
 #include "http.h"
 
-
 #include <stdio.h>
-
-
-using namespace tt;
 
 ClientSocket::ClientSocket(int server, struct ::sockaddr *address):
     _serverSocket        (server),

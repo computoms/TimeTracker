@@ -4,50 +4,48 @@
 #include <string>
 #include "clientsocket.h"
 
-namespace tt
+class HttpResponse
 {
-    class HttpResponse
-    {
-    public:
-        HttpResponse(std::string content);
+public:
+    HttpResponse(std::string content);
 
-        void sendTo(const ClientSocket &client) const;
+    void sendTo(const ClientSocket &client) const;
 
-    private:
-        std::string getSocketData() const;
-        void makeHeader(std::string content);
+private:
+    std::string getSocketData() const;
+    void makeHeader(std::string content);
 
-    private:
-        std::string _header;
-        std::string _htmlContent;
-    };
+private:
+    std::string _header;
+    std::string _htmlContent;
+};
 
-    enum RequestType {
-        Request_Get,
-        Request_Post,
-        Request_Invalid
-    };
+enum RequestType {
+    Request_Get,
+    Request_Post,
+    Request_Invalid
+};
 
 
-    class HttpRequest
-    {
-    public:
-        HttpRequest();
+class HttpRequest
+{
+public:
+    HttpRequest();
 
-        void read(const ClientSocket &client);
+    void read(const ClientSocket &client);
 
-        RequestType  getType() const;
-        std::string getPath() const;
+    RequestType  getType() const;
+    std::string getPath() const;
 
-    private:
-        void parseData(std::string data);
+private:
+    void parseData(std::string data);
 
-    private:
-        RequestType _requestType;
+private:
+    RequestType _requestType;
 
-        std::string _path;
+    std::string _path;
 
-    };
-}
+};
+
 
 #endif // TT_HTTP_H

@@ -8,8 +8,6 @@
 #include <string.h>
 #include <sstream>
 
-using namespace tt;
-
 int main()
 {
     WebServer server;

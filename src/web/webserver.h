@@ -12,34 +12,30 @@
 #include "actioncontroller.h"
 #include "core/timetracker.h"
 
-namespace tt
+class WebServer
 {
-    class WebServer
-    {
-    public:
-        WebServer();
+public:
+    WebServer();
 
-        void initialize(std::string ipAddress, unsigned short port);
-        void start();
-        void stop();
-        void shutdown();
+    void initialize(std::string ipAddress, unsigned short port);
+    void start();
+    void stop();
+    void shutdown();
 
-    private:
-        HttpResponse processGetAction(std::string path) const;
+private:
+    HttpResponse processGetAction(std::string path) const;
 
-    private:
-        int _serverSocket;
-        bool _isStarted;
+private:
+    int _serverSocket;
+    bool _isStarted;
 
-        struct sockaddr_in _address;
-        int _maxConnections;
-        PageGenerator _pageGenerator;
-        ActionController _actionController;
+    struct sockaddr_in _address;
+    int _maxConnections;
+    PageGenerator _pageGenerator;
+    ActionController _actionController;
 
-        FilePersistor _persistor;
-        TimeTracker _timeTracker;
-    };
-}
-
+    FilePersistor _persistor;
+    TimeTracker _timeTracker;
+};
 
 #endif // TT_WEB_SERVER_H

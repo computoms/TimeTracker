@@ -6,7 +6,6 @@
 #include <sstream>
 #include <arpa/inet.h>
 
-using namespace tt;
 
 WebServer::WebServer():
     _serverSocket        (-1),

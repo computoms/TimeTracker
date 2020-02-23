@@ -4,8 +4,6 @@
 #include <unistd.h>
 #include <iostream>
 
-using namespace tt;
-
 HttpResponse::HttpResponse(std::string content)
 {
     makeHeader(content);
