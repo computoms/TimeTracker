@@ -43,6 +43,7 @@ void WebServer::initialize(std::string ipAddress, unsigned short port)
 
     pageGenerator.initialize();
     actionController.initializeActions();
+    timeTracker.load();
 }
 
 void WebServer::start()

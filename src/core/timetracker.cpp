@@ -12,6 +12,11 @@ TimeTracker::~TimeTracker()
 
 }
 
+void TimeTracker::load()
+{
+    _persistor->read(this);
+}
+
 void TimeTracker::startWorking()
 {
     std::shared_ptr<WorkDay> existing = getWorkDay(DateTime::today().getDate());

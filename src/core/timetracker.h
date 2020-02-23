@@ -15,6 +15,8 @@ public:
     TimeTracker(Persistor *persistor);
     ~TimeTracker();
 
+    void load();
+
     void startWorking();
     void stopWorking();
 
