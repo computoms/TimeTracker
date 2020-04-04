@@ -2,6 +2,10 @@
 
 The `TimeTracker` application is aimed at helping users manage their time-logging. It can keep track of your working hours for a given projet. 
 
+## Motivation and implementation
+
+The real motivation of the development of this small software is to understand how web servers are working, and how to implement a small web server in c++.
+
 ## Structure
 
 The code is structured around two sub-folders:

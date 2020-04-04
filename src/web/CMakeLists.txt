@@ -21,6 +21,8 @@ add_executable(${PROJECT_NAME}
         ${HDRS_FILES} ${SRCS_FILES} serve.cpp)
 target_link_libraries(${PROJECT_NAME} TimeTracker_Core)
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../)
+install(TARGETS ${PROJECT_NAME}
+        RUNTIME DESTINATION ${PROJECT_BINARY_DIR}/../../bin)
 
 add_executable(Test_webclient
         client.cpp)
